@@ -179,6 +179,15 @@ header {
                 font-size: 16px;
                 margin-bottom: 50px;
             }
+            .header-content-inner p {
+                background-color: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
+                color: white; /* Ensures text is readable against the dark background */
+                padding: 10px 15px; /* Adds padding around the text */
+                border-radius: 5px; /* Optional: rounds the corners */
+                display: inline-block; /* Limits the background to just the text area */
+                max-width: 80%; /* Limits width to keep it centered and readable */
+                margin: 0 auto; /* Centers the paragraph */
+            }
         }
     }
     @media (min-width: 768px) {
