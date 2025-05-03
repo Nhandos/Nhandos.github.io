@@ -99,13 +99,13 @@ After playing guess $G_n$ and observing pattern $x_n=f(w_{\text{true}},G_n)$,
 $\mathcal{W}_{n+1}\leftarrow\set{w\in{\mathcal{W}_n}:f(w,G_n)=x_n}$
 
 We then:
-1. Go back to **step 2** recompute $P_{X\mid G}(x)$ for every guess $G\in\mathcal{W}$, but sum only over the current answer set $\mathcal{W}_{n+1}$.
+1. Go back to **step 2** recompute $P_{X\mid G}(x)$ for every guess $G\in\mathcal{W}$, but sum only over the current answer set $\mathcal{W}_{n+1}$
 2. Pick the entropy‑maximising guess $G_{n+1}$ 
-3. Repeat these steps until the pattern is 🟩🟩🟩🟩🟩 or six guesses are used.
+3. Repeat these steps until the pattern is 🟩🟩🟩🟩🟩 or six guesses are used
 
 ## Rust implementation
 
-For an implementation in Rust, see.
+For an implementation in Rust, see https://github.com/Nhandos/rust-wordle.
 
 ## Results
 
