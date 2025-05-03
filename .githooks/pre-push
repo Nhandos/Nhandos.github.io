@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Always run from the root of the repo
+ROOT_DIR=$(git rev-parse --show-toplevel)
+cd "$ROOT_DIR" || exit 1
+
+echo "Running tools/test.sh before push..."
+
+./tools/test.sh
+
+if [ $? -ne 0 ]; then
+  echo "Tests failed. Push aborted."
+  exit 1
+fi
+
+echo "Tests passed. Proceeding with push."
+exit 0

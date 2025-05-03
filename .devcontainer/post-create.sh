@@ -16,3 +16,6 @@ sed -i -E "s/^(plugins=\()(git)(\))/\1\2 zsh-syntax-highlighting zsh-autosuggest
 
 # Avoid git log use less
 echo -e "\nunset LESS" >>~/.zshrc
+
+# Set Git to use custom hooks directory
+git config core.hooksPath .githooks
