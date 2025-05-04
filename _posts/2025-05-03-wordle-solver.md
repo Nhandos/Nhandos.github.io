@@ -18,7 +18,7 @@ Wordle is a single-player **Mastermind** variant played on five-letter English w
 
 You win when the pattern is 🟩🟩🟩🟩🟩 - and you have only six guesses. A solver's job is to choose guesses that zero-in on the secret word as fast as possible.
 
-## Algorithm overview
+## Algorithm 
 
 ### **Step 1: Build a 'prior' over the answer list**
 Let $\mathcal{W}$ be the dictionary of 5-letter words valid in a game of Wordle, and treat the secret word as a random variable $W\in\mathcal{W}$. The **probability mass function** (pmf)
@@ -45,9 +45,8 @@ $$
 P_W(w)
 \;=\;
 \frac{\text{Weight}(w)}
-     {\displaystyle\sum_{v \in \mathcal{W}} \text{Weight}(v)}.
+     {\displaystyle\sum_{v\in{W}} \text{Weight}(v)}.
 $$
-
 
 ### **Step 2: Turn a guess into a random pattern**
 
@@ -152,4 +151,12 @@ For an implementation in Rust, see [https://github.com/Nhandos/rust-wordle](http
 
 ## Results
 
+Below is the result of my algorithm using this [corpus](https://wortschatz.uni-leipzig.de/en/download/English) with the total word list being the top 4047 most frequently used 5-letters in that corpus.
+
+![Alt text](assets/lib/worlde-solver/entropy_histogram.png)
+
+On the horizontal axis is the entropy of the candidate list and the vertical axis is how many guesses the solver still needs on average to finish. When the game begins we get around (12 bits) of uncertainty and the solver typically needs around 2.8 guesses to finish. 
+
 ## Conclusion
+
+I achieved what I wanted with this mini project which is to brush up on my probability and to learn a bit of rust. I got lazy towards the end and relied a bit more on generative AI than I'd like. The result shown above is probably going to be much different than **3Blue1Brown**'s because they used a much larger word list.
