@@ -136,7 +136,7 @@ Exactly computing $S(E)$ for every real Wordle state is expensive. So it is done
 3. Fit / interpolate those pairs to obtain a smooth curve S(E)
 
 
-### **Step 4: Narrow down $W$ and repeat**
+### **Step 4: Narrow down W and repeat**
 
 After playing the best guess $G_n$, and observing the actual pattern $x_{n} = f(w_{\text{true}},G_n)$, we eliminate any words that wouldn't have produced the pattern:
 
