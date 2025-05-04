@@ -29,12 +29,12 @@ $$
 
 tells us how plausible each candidate is. 
 
-**3Blue1Brown** use a text corpus and apply a steep sigmoid that keeps the first $15,000$ words nearly uniform and then roll off smoothly. The corpus is sorted from most frequent to least frequent where the most frequent word has a **rank** $r(w)=1$.
+**3Blue1Brown** use a text corpus and apply a steep sigmoid that keeps the first few thousands words nearly uniform and then roll off smoothly. The corpus is sorted from most frequent to least frequent where the most frequent word has a **rank** $r(w)=1$.
 
 $$
 \text{Weight}(w) =
 \displaystyle
-\frac{1}{1 + e^{\,\alpha\,\bigl(r(w) - 15\,000\bigr)}}
+\frac{1}{1 + e^{\,\alpha\,\bigl(r(w) - 1,500\bigr)}}
 \qquad\qquad (\alpha \gtrsim 0.001\text{–}0.005)
 $$
 
@@ -44,6 +44,8 @@ P_W(w)
 \frac{\text{Weight}(w)}
      {\displaystyle\sum_{v\in{W}} \text{Weight}(v)}.
 $$
+
+I used $1,500$ as where the midpoint of the sigmoid function is, but this should be adjusted based the size of the corpus. $\alpha$ is the steepness transition (higher = steeper).
 
 ### **Step 2: Turn a guess into a random pattern**
 
