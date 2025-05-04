@@ -97,7 +97,7 @@ $$
 G_{\text{entropy}} = \arg\max_{G\in\mathcal{W}}{H(X\mid{G})}
 $$
 
-That policy is superb when thousands of words are still possible, but it loses its edge once the candidate set $W_n$
+That policy is superb when thousands of words are still possible, but it loses its edge once the candidate set $W$
 shrinks to a few dozen. At that point you also care about:
 
 * "What's the chance I simply *hit* the answer right now?"
@@ -118,7 +118,7 @@ $$
 $$
 
 * $P_W(G)$ is the probability we *hit* the answer out right
-* If we miss the answer, our entropy is expected to drop from $E$ to $E - H(X\midG); we then look up how many moves that entropy typically costs and weigh it the the probability (1 - P_W{G})
+* If we miss the answer, our entropy is expected to drop from $E$ to $E - H(X\mid{G})$ we then look up how many moves that entropy typically costs and weigh it the the probability $1 - P_W(G)$
 
 Finally the best guess is
 
