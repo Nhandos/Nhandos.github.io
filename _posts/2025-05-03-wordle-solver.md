@@ -154,7 +154,7 @@ Below is the result of my algorithm using this [corpus](https://wortschatz.uni-l
 
 ![Alt text](assets/posts/wordle-solver/entropy_histogram.png)
 
-On the horizontal axis is the entropy of the candidate list and the vertical axis is how many guesses the solver still needs on average to finish. When the game begins we get around (12 bits) of uncertainty and the solver typically needs around 2.8 guesses to finish. 
+On the horizontal axis is the entropy of the candidate list and the vertical axis is how many guesses the solver still needs on average to finish. When the game begins we get around 12 bits of uncertainty and the solver typically needs 3.8 guesses on average (the y-axis shows number of guesses after the current guess, so we need to add 1).
 
 ## Conclusion
 
