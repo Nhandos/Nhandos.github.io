@@ -29,15 +29,12 @@ $$
 
 tells us how plausible each candidate is. 
 
-**3Blue1Brown** use a text corpus and apply a steep sigmoid that keeps the first $15,000$ words nearly uniform and then roll off smoothly. The corpus is sorted from most frequent to least frequent where the most frequent word has a **rank** $r(w)$ (1 = most frequent).
+**3Blue1Brown** use a text corpus and apply a steep sigmoid that keeps the first $15,000$ words nearly uniform and then roll off smoothly. The corpus is sorted from most frequent to least frequent where the most frequent word has a **rank** $r(w)=1$.
 
 $$
-\text{Weight}(w) \;=\;
-\begin{cases}
-1, & r(w) \le 15\,000,\\[6pt]
+\text{Weight}(w) =
 \displaystyle
-\frac{1}{1 + e^{\,\alpha\,\bigl(r(w) - 15\,000\bigr)}}, & r(w) > 15\,000,
-\end{cases}
+\frac{1}{1 + e^{\,\alpha\,\bigl(r(w) - 15\,000\bigr)}}
 \qquad\qquad (\alpha \gtrsim 0.001\text{–}0.005)
 $$
 
