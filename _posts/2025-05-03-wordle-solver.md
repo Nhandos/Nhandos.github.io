@@ -153,7 +153,7 @@ For an implementation in Rust, see [https://github.com/Nhandos/rust-wordle](http
 
 Below is the result of my algorithm using this [corpus](https://wortschatz.uni-leipzig.de/en/download/English) with the total word list being the top 4047 most frequently used 5-letters in that corpus.
 
-![Alt text](assets/lib/worlde-solver/entropy_histogram.png)
+![Alt text](assets/posts/wordle-solver/entropy_histogram.png)
 
 On the horizontal axis is the entropy of the candidate list and the vertical axis is how many guesses the solver still needs on average to finish. When the game begins we get around (12 bits) of uncertainty and the solver typically needs around 2.8 guesses to finish. 
 
