@@ -136,15 +136,17 @@ Exactly computing $S(E)$ for every real Wordle state is expensive. So it is done
 3. Fit / interpolate those pairs to obtain a smooth curve S(E)
 
 
-### **Step 4: Narrow down W and repeat**
+### **Step 4: Update our Prior and repeat**
 
-After playing the best guess $G_n$, and observing the actual pattern $x_{n} = f(w_{\text{true}},G_n)$, we eliminate any words that wouldn't have produced the pattern:
+After playing the best guess $G_n$, and observing the actual pattern $x_{n} = f(w_{\text{true}},G_n)$, we restrict the distribution $P_W(w)$ to only those words consistent with the pattern:
 
 $$
-W_{n+1}\leftarrow\set{w\in{W_n}:f(w,G_n)=x_n}
+P_{W_{n+1}}(w) = \text{Norm}\left(P_{W_n}(w) \cdot \mathbf{1}[f(w, G_n) = x_n]\right)
 $$
 
-We then update the prior $P_{W}(w)$ that we built in step 1 using only $W_{n+1}$ rather the entire dictionary, and repeat these steps using the new prior until the pattern is 🟩🟩🟩🟩🟩 or six guesses are used.
+(The $\text{Norm}$ function is just there to normalise our distribution function so that it has a sum of 1.0)
+
+Use the new prior distribution and repeat these steps.
 
 ## Rust implementation
 
