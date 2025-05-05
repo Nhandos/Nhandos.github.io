@@ -112,7 +112,7 @@ The key approximation is
 
 $$
 \mathbb{E}[\text{future moves}\mid G] 
-  = P_{W}(G) + (1 - P_{W}(G))\, S\!\bigl(E - H(X\mid G)\bigr)
+  = 1 + (1 - P_{W}(G))\, S\!\bigl(E - H(X\mid G)\bigr)
 $$
 
 * $P_W(G)$ is the probability we *hit* the answer out right
@@ -123,7 +123,7 @@ Finally the best guess is
 $$
 G_{\text{best}} 
   = \arg\min_{G \in \mathcal{W}} 
-        \Bigl[\,P_W(G) + (1 - P_{W}(G))\, S\!\bigl(E - H(X\mid G)\bigr)\Bigr]
+        \Bigl[\,1 + (1 - P_{W}(G))\, S\!\bigl(E - H(X\mid G)\bigr)\Bigr]
 $$
 
 #### Where does $S(E)$ come from? (Boot-strapping)
