@@ -125,7 +125,7 @@ Finally the best guess is
 $$
 G_{\text{best}} 
   = \arg\min_{G \in \mathcal{W}} 
-        \Bigl[\,1 + (1 - P_{W}(G))\, S\!\bigl(E - H(X\mid G)\bigr)\Bigr]
+        \Bigl[\,(1 - P_{W}(G))\, S\!\bigl(E - H(X\mid G)\bigr)\Bigr]
 $$
 
 #### Where does $S(E)$ come from? (Boot-strapping)
