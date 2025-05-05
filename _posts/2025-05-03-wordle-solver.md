@@ -7,7 +7,7 @@ math: true
 author: <nhan_dao>
 ---
 
-> **TL;DR** I just formalized [3Blue1Brown's information theory approach](https://youtu.be/v68zYyaEmEA?si=PtveNriXUR6EIJOD) to solving Wordle and implemented it in Rust
+> **TL;DR** I just formalized [3Blue1Brown's information theory approach](https://youtu.be/v68zYyaEmEA?si=PtveNriXUR6EIJOD) to solving Wordle and implemented it in Rust for the sake of learning Rust
 
 ## Wordle in one paragraph
 
@@ -20,6 +20,8 @@ You win when the pattern is 🟩🟩🟩🟩🟩 - and you have only six guesses
 
 ## Algorithm 
 
+I outlined the steps of the algorithm below but you should probably watch the original video by *3Blue1Brown* as that does a better job at explaining.
+
 ### **Step 1: Build a 'prior' over the answer list**
 Let $\mathcal{W}$ be the dictionary of 5-letter words valid in a game of Wordle, and treat the secret word as a random variable $W\in\mathcal{W}$. The **probability mass function** (pmf)
 
@@ -29,7 +31,7 @@ $$
 
 tells us how plausible each candidate is. 
 
-**3Blue1Brown** use a text corpus and apply a steep sigmoid that keeps the first few thousands words nearly uniform and then roll off smoothly. The corpus is sorted from most frequent to least frequent where the most frequent word has a **rank** $r(w)=1$.
+*3Blue1Brown* use a text corpus and apply a steep sigmoid that keeps the first few thousands words nearly uniform and then roll off smoothly. The corpus is sorted from most frequent to least frequent where the most frequent word has a **rank** $r(w)=1$.
 
 $$
 \text{Weight}(w) =
@@ -101,7 +103,7 @@ shrinks to a few dozen. At that point you also care about:
 * "What's the chance I simply *hit* the answer right now?"
 * "If I miss, how many moves will I need afterwards?"
 
-To balance these two effects, **3Blue1Brown** defines an *expected-moves* function as a function of the current entropy of the candidate words set $W$.
+To balance these two effects, *3Blue1Brown* defines an *expected-moves* function as a function of the current entropy of the candidate words set $W$.
 
 $$
 S(E) (\text{units: guesses still needed})
@@ -158,4 +160,4 @@ On the horizontal axis is the entropy of the candidate list and the vertical axi
 
 ## Conclusion
 
-I achieved what I wanted with this mini project which is to brush up on my probability and to learn a bit of rust. I got lazy towards the end and relied a bit more on generative AI than I'd like. The result shown above is probably going to be much different than **3Blue1Brown**'s because they used a much larger word list.
+I achieved what I wanted with this mini project which is to brush up on my probability and to learn a bit of rust. I got lazy towards the end and relied a bit more on generative AI than I'd like. The result shown above is probably going to be much different than *3Blue1Brown*'s because they used a much larger word list.
