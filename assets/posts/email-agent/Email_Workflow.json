@@ -1,0 +1,327 @@
+{
+  "name": "Email Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "output": "raw",
+        "filters": {
+          "hasAttachments": false,
+          "foldersToInclude": [
+            "AQMkADAwATM3ZmYAZS1kZAAwNi1kM2I3LTAwAi0wMAoALgAAAzgdZ0T43DZCpjfDGapxwmgBACA78IcZdkBJgOycanyAQv8AB7TCiq8AAAA="
+          ]
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -100
+      ],
+      "id": "1618a0a5-135f-421e-a557-4458daf4f417",
+      "name": "Microsoft Outlook Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "2KAM6w7iavLSyDvl",
+          "name": "Microsoft Outlook account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-2.0-flash-001",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        80
+      ],
+      "id": "caf3df6d-7e51-41b1-bbde-211d0927403f",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "NZJ4cAvXYjvXmM8l",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "=subject: {{ $json.subject }}\nfrom: {{ $json.from.emailAddress }}\nbody: {{ $json.body.content }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Billing"
+            },
+            {
+              "category": "Others"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -580,
+        -100
+      ],
+      "id": "dcb3520f-599b-4831-a2ad-1f96b1eb5dc4",
+      "name": "Email Classifier"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "attachment_0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -420
+      ],
+      "id": "23b969da-5932-4768-bd5b-0ad1c88986fe",
+      "name": "Extract from File",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "create",
+        "calendarId": {
+          "__rl": true,
+          "value": "AQMkADAwATM3ZmYAZS1kZAAwNi1kM2I3LTAwAi0wMAoARgAAAzgdZ0T43DZCpjfDGapxwmgHAPgAhhqCcu1Esxp5fbNYEqsAAAIBBgAAAPgAhhqCcu1Esxp5fbNYEqsAAAJ6nAAAAA==",
+          "mode": "list",
+          "cachedResultName": "Calendar"
+        },
+        "subject": "={{ $json.output.bill_title }}: Owed {{ $json.output.amount_owed }}",
+        "startDateTime": "={{ $json.output.due_date.toDateTime().setZone('Australia/Perth').startOf('day') }}",
+        "endDateTime": "={{ $json.output.due_date.toDateTime().setZone('Australia/Perth').startOf('day') }}",
+        "additionalFields": {
+          "body": "={{ $json.output.description }}\n<a href=\"{{$('Microsoft Outlook Trigger').item.json.webLink}}\">\nClick here to view the original email\n</a>",
+          "isAllDay": true
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        580,
+        -460
+      ],
+      "id": "839a923a-847e-469a-9a1c-c95d15356fd9",
+      "name": "Create Billing Event",
+      "webhookId": "0717140f-581d-4600-b6d0-424d0f2ff10c",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "2KAM6w7iavLSyDvl",
+          "name": "Microsoft Outlook account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e1c9e740-59c1-4a60-bb1a-d25965357523",
+              "leftValue": "={{ $json.output.due_date }}",
+              "rightValue": "null",
+              "operator": {
+                "type": "dateTime",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        420,
+        -380
+      ],
+      "id": "17fe2697-a2dc-4483-8564-d722c36c00d4",
+      "name": "If bill has a due date"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "929b1b93-3fe2-4ac7-9633-07f16d9c3388",
+              "leftValue": "={{ $json.hasAttachments }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -260,
+        -240
+      ],
+      "id": "305433de-3644-4279-a0ea-a3afe384acba",
+      "name": "If has attachment"
+    },
+    {
+      "parameters": {
+        "text": "=Here's the bill email:\n\nSubject: {{ $('Microsoft Outlook Trigger').item.json.subject }}\n\nfrom: {{ $('Microsoft Outlook Trigger').item.json.from }}\n\nbody: {{ $('Email Classifier').item.json.body.content }}\n\nIf this bill contains an attachment here it is:\n\n{{ $json.text }}\n\n\n",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"bill_title\": {\n      \"type\": [\"string\", \"null\"],\n      \"description\": \"The title or main heading of the bill.\"\n    },\n    \"description\": {\n      \"type\": [\"string\", \"null\"],\n      \"description\": \"A brief description summarizing the bill.\"\n    },\n    \"amount_owed\": {\n      \"type\": [\"string\", \"null\"],\n      \"description\": \"The total amount owed or minimum payment, if applicable. Null if no payment is required.\"\n    },\n    \"due_date\": {\n      \"type\": [\"string\", \"null\"],\n      \"format\": \"date-time\",\n      \"description\": \"The due date of the payment as a UTC datetime string in ISO 8601 format, or null if no payment is required.\"\n    },\n    \"bpay_info\": {\n      \"type\": [\"object\", \"null\"],\n      \"description\": \"BPAY payment information including biller code and reference number. Null if no payment is required.\",\n      \"properties\": {\n        \"biller_code\": {\n          \"type\": [\"string\", \"null\"],\n          \"description\": \"BPAY biller code\"\n        },\n        \"reference\": {\n          \"type\": [\"string\", \"null\"],\n          \"description\": \"BPAY reference number\"\n        }\n      },\n      \"required\": [\"biller_code\", \"reference\"]\n    }\n  },\n  \"required\": [\"bill_title\", \"description\", \"amount_owed\", \"due_date\", \"bpay_info\"]\n}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.1,
+      "position": [
+        100,
+        -380
+      ],
+      "id": "46bbc8b3-cb41-4d78-ad1a-403eb39bcdd0",
+      "name": "Extract Billing Info"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Microsoft Outlook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Email Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract Billing Info",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Classifier": {
+      "main": [
+        [
+          {
+            "node": "If has attachment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Extract Billing Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Billing Event": {
+      "main": [
+        []
+      ]
+    },
+    "If bill has a due date": {
+      "main": [
+        [
+          {
+            "node": "Create Billing Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If has attachment": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Billing Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Billing Info": {
+      "main": [
+        [
+          {
+            "node": "If bill has a due date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bf1e3b0b-d3e4-4460-bc71-98e61e08fa7d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b9fdcb8e40a6b17d1374385affd8d37b53965227094ba6036f12a0b346b8f814"
+  },
+  "id": "CdTnPOGELMQCMjQa",
+  "tags": []
+}
