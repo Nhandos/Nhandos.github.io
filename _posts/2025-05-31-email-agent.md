@@ -1,5 +1,5 @@
 ---
-title: Bulding an Email Agent using Langflow
+title: Bulding an Email Agent using N8N
 date: 2025-05-31 14:56:00 +0800
 categories: [Automation]
 tags: [llm, agents]     
