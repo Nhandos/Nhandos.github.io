@@ -4,7 +4,7 @@
     {
       "label": "Run Jekyll Server",
       "type": "shell",
-      "command": "./tools/run.sh",
+      "command": "./tools/run.sh -H 0.0.0.0",
       "group": {
         "kind": "build",
         "isDefault": true
